@@ -122,7 +122,7 @@ def users():
             res.append(u.to_dict())
         return json.dumps(res), 200, {'Content-Type': 'application/json; charset=utf-8'}
     elif request.method == "POST":
-        user_data = json.load(request.data)
+        user_data = json.loads(request.data)
         new_user = User(
             first_name=user_data["first_name"],
             last_name=user_data["last_name"],
@@ -136,7 +136,7 @@ def users():
         return "", 201
 
 
-@app.route("/user/<uid>", methods=['GET', 'POST', 'DELETE'])
+@app.route("/user/<uid>", methods=['GET', 'DELETE', 'PUT'])
 def get_user(uid):
     if request.method == "GET":
         return json.dumps(User.query.get(uid).to_dict()), 200, {'Content-Type': 'application/json; charset=utf-8'}
@@ -144,7 +144,7 @@ def get_user(uid):
         u = User.query.get(uid)
         db.session.delete(u)
         db.session.commit()
-        return "", 284
+        return "", 204
     elif request.method == "PUT":
         user_data_refresh = json.loads(request.data)
         u = User.query.get(uid)
@@ -156,7 +156,7 @@ def get_user(uid):
         u.phone = user_data_refresh["phone"],
         db.session.delete(u)
         db.session.commit()
-        return "", 284
+        return "", 204
 
 
 @app.route("/orders", methods=['GET', 'POST'])
@@ -167,7 +167,7 @@ def orders():
             res.append(o.to_dict())
         return json.dumps(res), 200, {'Content-Type': 'application/json; charset=utf-8'}
     elif request.method == "POST":
-        order_data = json.load(request.data)
+        order_data = json.loads(request.data)
         new_order = Order(
             name=order_data["name"],
             description=order_data["description"],
@@ -183,7 +183,7 @@ def orders():
         return "", 201
 
 
-@app.route("/order/<oid>", methods=['GET', 'POST'])
+@app.route("/order/<oid>", methods=['GET', 'DELETE', 'PUT'])
 def get_order(oid):
     if request.method == "GET":
         return json.dumps(Order.query.get(oid).to_dict()), 200, {'Content-Type': 'application/json; charset=utf-8'}
@@ -191,7 +191,7 @@ def get_order(oid):
         o = Order.query.get(oid)
         db.session.delete(o)
         db.session.commit()
-        return "", 284
+        return "", 204
     elif request.method == "PUT":
         order_data_refresh = json.loads(request.data)
         o = Order.query.get(oid)
@@ -205,7 +205,7 @@ def get_order(oid):
         o.executor_id = order_data_refresh["executor_id"],
         db.session.delete(o)
         db.session.commit()
-        return "", 284
+        return "", 204
 
 
 @app.route("/offers", methods=['GET', 'POST'])
@@ -216,7 +216,7 @@ def offers():
             res.append(of.to_dict())
         return json.dumps(res), 200, {'Content-Type': 'application/json; charset=utf-8'}
     elif request.method == "POST":
-        offer_data = json.load(request.data)
+        offer_data = json.loads(request.data)
         new_offer = Offer(
             order_id=offer_data["order_id"],
             executor_id=offer_data["executor_id"],
@@ -226,7 +226,7 @@ def offers():
         return "", 201
 
 
-@app.route("/offer/<ofid>", methods=['GET', 'POST'])
+@app.route("/offer/<ofid>", methods=['GET', 'DELETE', 'PUT'])
 def get_offer(ofid):
     if request.method == "GET":
         return json.dumps(Offer.query.get(ofid).to_dict()), 200, {'Content-Type': 'application/json; charset=utf-8'}
@@ -234,7 +234,7 @@ def get_offer(ofid):
         of = Offer.query.get(ofid)
         db.session.delete(of)
         db.session.commit()
-        return "", 284
+        return "", 204
     elif request.method == "PUT":
         offer_data_refresh = json.loads(request.data)
         of = Offer.query.get(ofid)
@@ -242,7 +242,7 @@ def get_offer(ofid):
         of.executor_id = offer_data_refresh["executor_id"],
         db.session.delete(of)
         db.session.commit()
-        return "", 284
+        return "", 204
 
 
 if __name__ == '__main__':
