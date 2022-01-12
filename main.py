@@ -131,7 +131,7 @@ def users():
             role=user_data["role"],
             phone=user_data["phone"],
         )
-        db.session.delete(new_user)
+        db.session.add(new_user)
         db.session.commit()
         return "", 201
 
@@ -154,7 +154,7 @@ def get_user(uid):
         u.email = user_data_refresh["email"],
         u.role = user_data_refresh["role"],
         u.phone = user_data_refresh["phone"],
-        db.session.delete(u)
+        db.session.add(u)
         db.session.commit()
         return "", 204
 
@@ -178,7 +178,7 @@ def orders():
             customer_id=order_data["customer_id"],
             executor_id=order_data["executor_id"],
         )
-        db.session.delete(new_order)
+        db.session.add(new_order)
         db.session.commit()
         return "", 201
 
@@ -203,7 +203,7 @@ def get_order(oid):
         o.price = order_data_refresh["price"],
         o.customer_id = order_data_refresh["customer_id"],
         o.executor_id = order_data_refresh["executor_id"],
-        db.session.delete(o)
+        db.session.add(o)
         db.session.commit()
         return "", 204
 
@@ -221,7 +221,7 @@ def offers():
             order_id=offer_data["order_id"],
             executor_id=offer_data["executor_id"],
         )
-        db.session.delete(new_offer)
+        db.session.add(new_offer)
         db.session.commit()
         return "", 201
 
@@ -240,7 +240,7 @@ def get_offer(ofid):
         of = Offer.query.get(ofid)
         of.order_id = offer_data_refresh["order_id"],
         of.executor_id = offer_data_refresh["executor_id"],
-        db.session.delete(of)
+        db.session.add(of)
         db.session.commit()
         return "", 204
 
